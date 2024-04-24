@@ -1,19 +1,25 @@
 <div class="container">
   <div class="mb-3" style="display: grid; padding-bottom: 15px;">
     <label for="uploadImage" class="form-label">Upload Image</label>
-    <input type="file"  class="form-control" id="uploadImage" name="image"
-      (change)="uploadImage($event)"
+    <input type="file" class="form-control" id="uploadImage" name="image" (change)="uploadImage($event)"
       accept="image/png, image/jpeg" [disabled]="!upload" multiple>
   </div>
-  <div class="mb-3">
-    <button (click)="resize()" [disabled]="!ifMinimum" class="btn btn-primary">Resize</button>
-  
+  <mat-form-field >
+    <mat-label>Select resize size</mat-label>
+    <mat-select [(value)]="selected">
+      <mat-option *ngFor="let size of resizeSize" [value]="size.value">{{size.viewValue}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="mb-3" style="margin-bottom: 20px;">
+    <button (click)="resize()" [disabled]="!ifMinimum" class="btn btn-primary" style="margin-right: 20px;">Resize</button>
     <button (click)="download()" [disabled]="!ifMinimum" class="btn btn-primary">Download</button>
   </div>
   <div>
-    <button (click)="cancelAll()">Cancel all</button>
-      <div style="border: solid 1px black">
-        <img *ngFor='let preview of previews;' [src]="preview" class="preview">
-      </div>
+    <button (click)="cancelAll()" style="margin-bottom: 20px;">Cancel all</button>
+    <div>
+      <img *ngFor='let preview of previews;' [src]="preview" class="preview" width="100px" height="110px"
+        style="border: 1px solid black;">
+    </div>
   </div>
+  
 </div>

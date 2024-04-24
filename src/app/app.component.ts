@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from './api.service';
 
 @Component({
@@ -13,8 +12,14 @@ export class AppComponent {
   fileArray: any[] = [];
   ifMinimum = false
   upload = true
-  url:any
-  previews:any=[]
+  url: any
+  previews: any = []
+  selected = 'HD';
+  resizeSize: any[] = [
+    { value: 'vga', viewValue: 'VGA' },
+    { value: 'hd', viewValue: 'HD' },
+    { value: 'fullHD', viewValue: 'fullHD' },
+  ];
 
   constructor(private apiService: ApiService) { }
 
@@ -36,11 +41,9 @@ export class AppComponent {
 
       reader.readAsDataURL(this.selectedFiles![i]);
     }
-    
   }
 
-  cancelAll(){
-    // this.selectedFiles = new FileList
+  cancelAll() {
     this.previews = []
     this.fileArray = []
   }
@@ -51,9 +54,26 @@ export class AppComponent {
     }
   }
 
-  resize(){
-    //console.log(this.fileArray);
-    this.apiService.resizeAndUpload(this.fileArray).subscribe({
+  resize() {
+    let width = 0
+    let height = 0
+
+    if (this.selected === 'vga') {
+      width = 640
+      height = 480
+    }
+    if (this.selected === 'hd') {
+      width = 1280
+      height = 720
+    }
+    if (this.selected === 'fullHD') {
+      width = 1920
+      height = 1080
+    }
+
+    let files = this.sortFilesForSend(width, height)
+
+    this.apiService.resizeAndUpload(files).subscribe({
       next: (data) => {
         console.log('registered');
       },
@@ -61,9 +81,26 @@ export class AppComponent {
         console.log(e);
       },
     })
-    
   }
 
-  download(){}
+  sortFilesForSend(width: any, height: any) {
+    let formData = new FormData();
+    let temp: any[] = []
 
+    for (let i = 0; i < this.fileArray[0].length; i++) {
+      temp.push(this.fileArray[0][i])
+    }
+
+    temp.forEach((file: any) => {
+      formData.append('files[]', file);
+
+    });
+
+    formData.append('height', height);
+    formData.append('width', width)
+
+    return formData
+  }
+
+  download() { }
 }

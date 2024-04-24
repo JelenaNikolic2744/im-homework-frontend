@@ -5,6 +5,10 @@ import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './api.service';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -15,6 +19,10 @@ import { ApiService } from './api.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatFormFieldModule, 
+    MatSelectModule, 
+    MatInputModule,
+    BrowserAnimationsModule,
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]
